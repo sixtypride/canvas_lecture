@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example</title>
+
+    <style>
+        body {
+            background: #dddddd;
+        }
+
+        #canvas {
+            background: #ffffff;
+            border: thin inset #aaaaaa;
+            /*width:600px;*/
+            /*height:300px;*/
+        }
+    </style>
+</head>
+
+<body>
+<canvas id='canvas' width="300" height="150">
+    Canvas not supported test
+</canvas>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    context.save();
+
+    context.translate(100, 0);
+    context.fillRect(0, 0, 100, 100);
+
+    context.restore();
+
+    context.fillStyle = "red";
+    context.fillRect(0, 0, 100, 100);
+
+</script>
+</body>
+</html>

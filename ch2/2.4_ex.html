@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example</title>
+
+    <style>
+        body {
+            background: #dddddd;
+        }
+
+        #canvas {
+            background: #ffffff;
+            border: thin inset #aaaaaa;
+            /*width:600px;*/
+            /*height:300px;*/
+        }
+    </style>
+</head>
+
+<body>
+<canvas id='canvas' width="580" height="362">
+    Canvas not supported test
+</canvas>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    var img = new Image();
+    img.onload = function() {
+        context.drawImage(img, 0, 0);
+        requestAnimationFrame(loop);
+    };
+    img.src = "test.jpg";
+
+    var mx =0, my = 0;
+
+    canvas.onmousemove = function(e) {
+        mx = e.clientX;
+        my = e.clientY;
+    };
+
+    function loop() {
+        //context.clearRect(0, 0, canvas.width, canvas.height);
+
+        context.save();
+        context.beginPath();
+        context.arc(mx, my, 30, 0, Math.PI * 2);
+        context.clip();
+        context.fillStyle = "white";
+        context.fill();
+//        context.drawImage(img, 0, 0);
+
+        context.restore();
+
+        requestAnimationFrame(loop);
+    }
+
+</script>
+</body>
+</html>

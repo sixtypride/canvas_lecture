@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example</title>
+
+    <style>
+        body {
+            background: #dddddd;
+        }
+
+        #canvas {
+            background: #ffffff;
+            border: thin inset #aaaaaa;
+        }
+    </style>
+</head>
+
+<body>
+<canvas id='canvas' width="600" height="300">
+    Canvas not supported test
+</canvas>
+<script>
+
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    var img = new Image();
+
+    img.onload = function() {
+
+        context.drawImage(img, 0, 0, canvas.width, canvas.height );
+        var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+        for( var i = 0; i < imageData.data.length; i += 4) {
+            var v = ( imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2] ) / 3;
+
+//            imageData.data[i] = v;
+//            imageData.data[i + 1] = v;
+//            imageData.data[i + 2] = v;
+            imageData.data[i + 3] = 127;
+        }
+
+        context.putImageData(imageData, 0, 0);
+    };
+
+    img.src = "./test.jpg";
+
+</script>
+</body>
+</html>

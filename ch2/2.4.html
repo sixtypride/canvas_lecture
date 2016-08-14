@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example</title>
+
+    <style>
+        body {
+            background: #dddddd;
+        }
+
+        #canvas {
+            background: #ffffff;
+            border: thin inset #aaaaaa;
+            /*width:600px;*/
+            /*height:300px;*/
+        }
+    </style>
+</head>
+
+<body>
+<canvas id='canvas' width="300" height="150">
+    Canvas not supported test
+</canvas>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    context.beginPath();
+    context.moveTo(100 + 0.5, 50);
+    context.lineTo(100 + 0.5,100);
+    context.lineTo(200 + 0.5, 50);
+    context.lineWidth = 10;
+    context.lineJoin = "round";
+    context.lineCap = "round";
+    context.stroke();
+
+    context.save();
+    context.beginPath();
+    context.arc(150, 75, 30, 0, Math.PI * 2);
+    context.clip();
+
+    context.beginPath();
+    context.rect(0,0, canvas.width, canvas.height);
+    context.fillStyle = "red";
+    context.fill();
+    context.restore();
+
+    context.beginPath();
+    context.rect(0,0, 100, 100);
+    context.fillStyle = "blue";
+    context.fill();
+
+
+
+</script>
+</body>
+</html>

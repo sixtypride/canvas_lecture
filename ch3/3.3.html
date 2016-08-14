@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example</title>
+
+    <style>
+        body {
+            background: #dddddd;
+        }
+
+        #canvas {
+            background: #ffffff;
+            border: thin inset #aaaaaa;
+            /*width:600px;*/
+            /*height:300px;*/
+        }
+    </style>
+</head>
+
+<body>
+<canvas id='canvas' width="500" height="150">
+    Canvas not supported test
+</canvas>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    context.font = "60px Impact";
+    context.lineWidth = 10;
+    context.lineJoin = "round";
+    context.strokeText("HELLO TEXT", 100, 100);
+    context.fillStyle = "red";
+    context.fillText("HELLO TEXT", 100, 100);
+
+    console.log(context.measureText("W").width);
+
+</script>
+</body>
+</html>

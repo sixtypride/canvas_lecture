@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example</title>
+
+    <style>
+        body {
+            background: #dddddd;
+        }
+
+        #canvas {
+            background: #ffffff;
+            border: thin inset #aaaaaa;
+        }
+    </style>
+</head>
+
+<body>
+<canvas id='canvas' width="600" height="300">
+    Canvas not supported test
+</canvas>
+<script>
+
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    requestAnimationFrame(loop);
+
+    var x = 0;
+    var y = 0;
+
+    //var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+    var offcanvas = document.createElement("canvas");
+    var offcontext = offcanvas.getContext("2d");
+
+    offcanvas.width = canvas.width;
+    offcanvas.height = canvas.height;
+
+    drawBackground(offcontext);
+
+    function loop() {
+        // 모두 지우고 다시 그린다
+//        context.clearRect(0, 0, canvas.width, canvas.height);
+//        drawBackground();
+
+
+        // 클리핑
+//        context.save();
+//        context.beginPath();
+//        context.rect(x, y, 50, 50);
+//        context.clip();
+//        context.clearRect(0, 0, canvas.width, canvas.height);
+//        context.drawImage(offcanvas, 0, 0);
+//        context.restore();
+
+        // ImageData로 복원
+//        context.clearRect(0, 0, canvas.width, canvas.height);
+//        context.putImageData(imageData, 0, 0);
+
+
+        // 오프스크린 사용
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(offcanvas, 0, 0);
+
+
+
+        x += 5;
+
+        if(x > canvas.width ) {
+            x = 0;
+        }
+
+        context.fillRect(x, y, 50, 50);
+        requestAnimationFrame(loop);
+    }
+
+
+
+    function drawBackground(ctx) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(50, 0);
+        ctx.lineTo(0, 100);
+        ctx.lineTo(100, 100);
+        ctx.closePath();
+        ctx.lineWidth = 5;
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+
+        ctx.fillStyle = "red";
+        ctx.fill();
+
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(200, 300);
+        ctx.lineTo(300, 100);
+        ctx.lineTo(500, 200);
+        ctx.lineTo(400, 300);
+        ctx.closePath();
+
+        ctx.fillStyle = "blue";
+        ctx.fill();
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(100, 100, 50, 0, Math.PI * 2);
+        ctx.fillStyle = "green";
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(300, 200, 50, 0, Math.PI * 2);
+        ctx.fillStyle = "yellow";
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+    }
+
+
+</script>
+</body>
+</html>

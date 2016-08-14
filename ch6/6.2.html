@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example</title>
+
+    <style>
+        body {
+            background: #dddddd;
+        }
+
+        #canvas {
+            background: #ffffff;
+            border: thin inset #aaaaaa;
+        }
+    </style>
+</head>
+
+<body>
+<canvas id='canvas' width="600" height="300">
+    Canvas not supported test
+</canvas>
+<script>
+    function windowToCanvas(x, y) {
+        var bbox = canvas.getBoundingClientRect();
+
+        return { x : x - bbox.left, y : y - bbox.top }
+    }
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+//    var offcanvas = document.createElement("canvas");
+//    var offcontext = offcanvas.getContext('2d');
+
+//    offcanvas.width = canvas.width;
+//    offcanvas.height = offcanvas.height;
+
+    context.beginPath();
+    context.rect(100, 100, 50, 50);
+    context.fillStyle = "blue";
+    context.fill();
+
+//    offcontext.beginPath();
+//    offcontext.rect(100, 100, 50, 50);
+//    offcontext.fillStyle = "red";
+//    offcontext.fill();
+
+
+    canvas.addEventListener('click', function(e) {
+        var loc = windowToCanvas(e.clientX, e.clientY);
+
+        // 클릭영역을 계산하여 구현한다.
+//        if(loc.x > 100 && loc.x < 150 && loc.y > 100 && loc.y < 150) {
+//            console.log("click");
+//        }
+
+        // 픽셀 감지로 구현
+//        var d = offcontext.getImageData(loc.x, loc.y, 1, 1);
+//
+//        if(d.data[0] === 255) {
+//            console.log("click");
+//        }
+
+        // isPointInPath로 구현
+        context.beginPath();
+        context.rect(100, 100, 50, 50);
+        var hit = context.isPointInPath(loc.x, loc.y);
+        console.log(hit);
+
+    });
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example</title>
+
+    <style>
+        body {
+            background: #dddddd;
+        }
+
+        #canvas {
+            background: #ffffff;
+            border: thin inset #aaaaaa;
+            /*width:600px;*/
+            /*height:300px;*/
+        }
+    </style>
+</head>
+
+<body>
+<canvas id='canvas' width="600" height="300">
+    Canvas not supported test
+</canvas>
+<script>
+    function windowToCanvas(x, y) {
+        var bbox = canvas.getBoundingClientRect();
+
+        return { x : x - bbox.left, y : y - bbox.top }
+    }
+
+    function DragObject() {
+        this.x = 0;
+        this.y = 0;
+
+        this.image = null;
+        this.width = 100;
+        this.height = 30;
+        this.text = "";
+
+        this.originX = 0;
+        this.originX = 0;
+    }
+
+    DragObject.prototype = {
+        draw: function() {
+            context.save();
+            context.drawImage(this.image, this.x, this.y);
+            context.font = "30px Impact";
+            context.fillStyle = "white";
+            context.textAlign = "center";
+            context.textBaseline = "middle";
+            context.fillText(this.text, this.x + this.width / 2, this.y + this.height / 2);
+            context.restore();
+        },
+        hitTest: function(x, y) {
+            context.beginPath();
+            context.rect(this.x, this.y, this.width, this.height);
+            return context.isPointInPath(x, y);
+        }
+    };
+
+    function DropObject() {
+        this.x = 0;
+        this.y = 0;
+
+        this.width = 100;
+        this.height = 30;
+
+        this.answer = "";
+    }
+
+    DropObject.prototype = {
+        draw: function() {
+            context.beginPath();
+            context.rect(this.x, this.y, this.width, this.height);
+            context.fillStyle = "blue";
+            context.fill();
+        },
+        hitTest: function(x, y) {
+            context.beginPath();
+            context.rect(this.x, this.y, this.width, this.height);
+            return context.isPointInPath(x, y);
+        }
+    };
+
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    var texts = ["I", "am", "a", "boy", "."];
+
+    var dragObjectList = [];
+    var dropObjectList = [];
+
+    var image = new Image();
+    image.onload = function() {
+        makeDragObject();
+        makeDropObject();
+
+        render();
+
+
+        canvas.addEventListener("mousedown", function(e) {
+            var loc = windowToCanvas(e.clientX, e.clientY);
+
+            for(var i = 0; i < dragObjectList.length; i++) {
+                if(dragObjectList[i].hitTest(loc.x, loc.y)) {
+                    currentDragObject = dragObjectList[i];
+
+                    currentDragObject.x = loc.x - currentDragObject.width / 2;
+                    currentDragObject.y = loc.y - currentDragObject.height / 2;
+
+                    dragObjectList.push(dragObjectList.splice(dragObjectList.indexOf(currentDragObject), 1)[0]);
+
+                    break;
+                }
+            }
+
+            render();
+        });
+
+        canvas.addEventListener("mousemove", function(e) {
+            if(currentDragObject == null) return;
+
+            var loc = windowToCanvas(e.clientX, e.clientY);
+
+            currentDragObject.x = loc.x - currentDragObject.width / 2;
+            currentDragObject.y = loc.y - currentDragObject.height / 2;
+
+            render();
+        });
+
+        addEventListener("mouseup", function(e) {
+            var loc = windowToCanvas(e.clientX, e.clientY);
+
+            for(var i = 0; i < dropObjectList.length; i++) {
+                if(dropObjectList[i].hitTest(loc.x, loc.y)) {
+
+                    if(currentDragObject.text == dropObjectList[i].answer) {
+                        currentDragObject.x = dropObjectList[i].x;
+                        currentDragObject.y = dropObjectList[i].y;
+                        currentDragObject = null;
+                        render();
+                        return;
+                    }
+                }
+            }
+            currentDragObject.x = currentDragObject.originX;
+            currentDragObject.y = currentDragObject.originY;
+            currentDragObject = null;
+
+            render();
+        });
+
+    };
+
+    image.src = "./dragImage.png";
+
+    var currentDragObject = null;
+
+    function makeDragObject() {
+
+        for(var i = 0; i < texts.length; i++) {
+            var drag = new DragObject();
+            drag.image = image;
+            drag.text = texts[i];
+
+            drag.x = 30 + (drag.width + 10) * i;
+            drag.y = 250;
+
+            drag.originX = drag.x;
+            drag.originY = drag.y;
+
+            dragObjectList.push(drag);
+        }
+    }
+
+    function makeDropObject() {
+
+        for(var i = 0; i < texts.length; i++) {
+            var drop = new DropObject();
+            drop.x = 30 + (drop.width + 10) * i;
+            drop.y = 20;
+
+            drop.answer = texts[i];
+
+            dropObjectList.push(drop);
+        }
+    }
+
+    function render() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        for(var i = 0; i < dropObjectList.length; i++) {
+            dropObjectList[i].draw();
+        }
+
+        for(var i = 0; i < dragObjectList.length; i++) {
+            dragObjectList[i].draw();
+        }
+    }
+
+
+</script>
+</body>
+</html>

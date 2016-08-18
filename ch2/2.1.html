@@ -18,22 +18,27 @@
 </head>
 
 <body>
-<canvas id='canvas' width="300" height="150">
+<canvas id='canvas' width="600" height="300">
     Canvas not supported test
 </canvas>
 <script>
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
 
-    context.save();
+    context.beginPath();
+    context.rect(0,0, 100, 100);
+    context.stroke();
 
-    context.translate(100, 0);
-    context.fillRect(0, 0, 100, 100);
+    context.beginPath();
+    context.rect(100, 100, 100, 100);
+    context.stroke();
 
-    context.restore();
+    context.beginPath();
+    context.arc( 150, 150, 50, 0, Math.PI);
+    context.closePath();
+    context.stroke();
 
-    context.fillStyle = "red";
-    context.fillRect(0, 0, 100, 100);
+
 
 </script>
 </body>

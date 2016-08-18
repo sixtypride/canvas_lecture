@@ -32,15 +32,18 @@
         context.drawImage(img, 0, 0, canvas.width, canvas.height );
         var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
+
+
         for( var i = 0; i < imageData.data.length; i += 4) {
             var v = ( imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2] ) / 3;
 
 //            imageData.data[i] = v;
 //            imageData.data[i + 1] = v;
 //            imageData.data[i + 2] = v;
-            imageData.data[i + 3] = 127;
+            imageData.data[i + 3] = 2;
         }
 
+        //context.clearRect(0, 0, canvas.width, canvas.height);
         context.putImageData(imageData, 0, 0);
     };
 
